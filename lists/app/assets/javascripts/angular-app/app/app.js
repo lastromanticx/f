@@ -20,8 +20,13 @@ angular
       })
       .state('lists.show',{
         url: '/lists/:id',
-        controller: 'ListsShowController as ctrl',
-        templateUrl: 'lists/show.html'
+        controller: 'ListsShowController as list',
+        templateUrl: 'lists/show.html',
+        resolve: {
+          getListResponse: function($stateParams,ListService){
+            return ListService.getList($stateParams.id);
+          }
+        }
       })
       .state('lists.new',{
         url: '/lists/new',

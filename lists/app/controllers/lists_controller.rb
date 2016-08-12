@@ -1,9 +1,9 @@
 class ListsController < ApplicationController
   def index
     @lists = List.all
-    respond_to do |f|
-      f.html { render :index }
-      f.json { render json: @lists }
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render json: @lists }
     end
   end
 
@@ -11,10 +11,14 @@ class ListsController < ApplicationController
     @list = List.find_by(id: params[:id])
     if @list.nil?
       not_found
-    elsif !authorize_resource(current_user,@list,:show)
-      return redirect_to lists_path
+    #elsif !authorize_resource(current_user,@list,:show)
+      #return redirect_to lists_path
     end
     @task = Task.new
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render json: @list }
+    end
   end
 
   def new

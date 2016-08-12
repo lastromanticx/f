@@ -1,6 +1,6 @@
-function ListsShowController($location,$stateParams){
+function ListsShowController(getListResponse){
   var ctrl = this;
-console.log($location.path())
+  console.log(getListResponse)
 }
 
 angular
