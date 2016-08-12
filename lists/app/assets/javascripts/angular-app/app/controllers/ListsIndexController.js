@@ -1,4 +1,4 @@
-function ListsController(getListsResponse){
+function ListsIndexController(getListsResponse){
   var ctrl = this;
 
   ctrl.lists = [];
@@ -10,4 +10,4 @@ function ListsController(getListsResponse){
 
 angular
   .module('app')
-  .controller('ListsController',ListsController);
+  .controller('ListsIndexController',ListsIndexController);
