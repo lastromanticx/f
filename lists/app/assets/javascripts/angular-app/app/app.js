@@ -46,6 +46,18 @@ angular
         controller: 'UsersController as ctrl',
         resolve: {
         }
+      })
+
+    ///////* SESSIONS *///////
+
+      .state('sessions',{
+        url: '',
+        templateUrl: 'sessions/ui_view.html'
+      })
+      .state('sessions.new',{
+        url: '/login',
+        templateUrl: 'sessions/new.html',
+        controller: 'SessionsController as ctrl'
       });
 
     $urlRouterProvider.otherwise('/lists');

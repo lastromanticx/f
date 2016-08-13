@@ -5,10 +5,10 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show]
 
-  resources :lists do
+  post 'sessions', to: 'sessions#create'
+  delete 'sessions', to: 'sessions#destroy'
 
-    resources :tasks  
-  end
+  resources :lists
 
   get '/search', to: 'lists#search'
   post '/search', to: 'lists#search'

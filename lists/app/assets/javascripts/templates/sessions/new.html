@@ -1,0 +1,17 @@
+<div class="panel panel-default devise-bs">
+  <div class="panel-heading">
+    <h4>Sign in</h4>
+  </div>
+  <div class="panel-body">
+    <form ng-submit="ctrl.authenticateUser()">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="text" class="form-control" ng-model="ctrl.user.email" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" ng-model="ctrl.user.password">
+      </div>
+      <input type="submit" id="submit" value="Sign In" />
+  </div>
+</div>
