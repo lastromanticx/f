@@ -1,9 +1,9 @@
-function ListsIndexController(getListsResponse){
+function ListsIndexController(lists){
   var ctrl = this;
 
   ctrl.lists = [];
 
-  angular.forEach(getListsResponse.data,function(listHash){
+  angular.forEach(lists,function(listHash){
     ctrl.lists.push(new List(listHash));
   });
 }

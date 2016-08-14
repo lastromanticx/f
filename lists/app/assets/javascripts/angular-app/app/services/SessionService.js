@@ -1,11 +1,16 @@
 function SessionService($http){
-  var ctrl = this;
+  var svc = this;
 
-  ctrl.getUserInfo = function (login_hash){
+  svc.user = null;
+  svc.loggedIn = false;
+
+  svc.getUserInfo = function (login_hash){
     return $http.post('/sessions',login_hash);
   }
 
-  ctrl.endSession = $http.delete('/sessions');
+  svc.endSession = function(){
+    return $http.delete('/sessions');
+  }
 }
 
 angular

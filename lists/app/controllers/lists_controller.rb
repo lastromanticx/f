@@ -1,67 +1,52 @@
 class ListsController < ApplicationController
   def index
-    @lists = List.all
-    respond_to do |format|
-      format.html { render :index }
-      format.json { render json: @lists }
-    end
+    lists = current_user.lists
+    render json: lists
   end
 
   def show
-    @list = List.find_by(id: params[:id])
-    if @list.nil?
-      not_found
-    #elsif !authorize_resource(current_user,@list,:show)
-      #return redirect_to lists_path
-    end
-    @task = Task.new
-    respond_to do |format|
-      format.html { render :show }
-      format.json { render json: @list }
-    end
-  end
+    list = List.find_by(id: params[:id])
 
-  def new
-    @list = List.new
+    if list.nil?
+      render json: {error: "Could not find list."}
+    elsif !authorize_resource(current_user,list,:show)
+      render json: {error: "Unauthorized."}
+    end
+
+    render json: list
   end
 
   def create
-    @list = List.new(name: list_params[:name])
-    if not @list.save
-      return render :new
+    list = List.new(name: list_params[:name])
+    if not list.save
+      return render json: { error: list.errors.to_json }, status: 200
     end
-    @list.users << current_user
-    @list.update_permission(current_user,"creator")
-    @list.collaborators = list_params[:collaborators]
+    list.users << current_user
+    list.update_permission(current_user,"creator")
+    list.collaborators = list_params[:collaborators]
 
-    redirect_to list_path(@list)
-  end
-
-  def edit
-    @list = List.find_by(id: params[:id])
-    if @list.nil?
-      not_found
-    elsif !authorize_resource(current_user,@list,:edit)
-      return redirect_to lists_path
-    end
+    render json: list, status: 201
   end
 
   def update
-    @list = List.find(params[:id])
-    return redirect_to lists_path if !authorize_resource(current_user,@list,:update)
-    if not @list.update(list_params)
-      return render :edit 
+    list = List.find(list_params[:id])
+
+    return render json: {error: "Unauthorized."} if !authorize_resource(current_user,list,:update)
+
+    if not list.update(list_params)
+      return render json: {error: "Unable to update."} 
     end
-    redirect_to list_path(@list)
+
+    render json: list, status: 200
   end
 
   def destroy
     list = List.find_by(id: params[:id])
-    return redirect_to lists_path if not authorize_resource(current_user,list,:destroy)
+    return render json: {error: "Unauthorized."} if not authorize_resource(current_user,list,:destroy)
     list.tasks.map(&:destroy)
     list.destroy
 
-    redirect_to lists_path
+    render plain: "List deleted.", status: 200
   end
 
   def search
@@ -72,9 +57,9 @@ class ListsController < ApplicationController
   end
 
   private
-
+  
   def list_params
-    params.require(:list).permit(:name,:collaborators)
+    params.require(:list).permit(:id,:name,:collaborators)
   end
 
   def search_params

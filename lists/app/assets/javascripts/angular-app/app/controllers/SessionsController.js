@@ -1,22 +1,18 @@
-function SessionsController(SessionService,$state){
+function SessionsController(SessionService,$state,$window){
   var ctrl = this;
 
-  ctrl.user = {};
-
-  ctrl.authenticateUser = function(){
+  ctrl.login = function(){
     SessionService.getUserInfo(ctrl.user).then(function(resp){
       if (resp.data.error){
-        alert(resp.data.error);
+        return alert(resp.data.error);
 
       } else {
-        UsersController.user = {email: resp.data.email, id: resp.data.id};
-        $state.go('users');
+        SessionService.user = new User(resp.data);
+        $window.localStorage.loggedIn = SessionService.loggedIn = true;
+        $window.localStorage.user = JSON.stringify(SessionService.user);
+        $state.go('lists.index');
       }
     });
-  }
-
-  ctrl.logout = function(){
-    console.log(SessionService.endSession);
   }
 }
 

@@ -27,7 +27,11 @@ class List < ApplicationRecord
   end
 
   def collaborators(include_creator=false)
-    users.map{|user| if permission(user) == "creator" then (include_creator ? user.email + " (creator)" : "") else user.email end}.join(", ")
+    if include_creator
+      users.map{|user| if permission(user) == "creator" then user.email + " (creator)" else user.email end}.join(", ")
+    else
+      users.select{|user| permission(user) != "creator"}.map(&:email).join(", ")
+    end
   end
 
   def self.search(query, list_id, user_id)
