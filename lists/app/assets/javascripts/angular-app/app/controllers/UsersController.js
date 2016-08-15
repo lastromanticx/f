@@ -1,7 +1,7 @@
-function UsersController(SessionService,$state,$window){
+function UsersController(userInfo,SessionService,$state,$window){
   var ctrl = this;
 
-  ctrl.user = JSON.parse($window.localStorage.user);
+  ctrl.user = new User(userInfo);
 
   ctrl.logout = function(){
     SessionService.endSession().then(function(resp){
@@ -10,7 +10,6 @@ function UsersController(SessionService,$state,$window){
       }
 
       SessionService.user = null;
-      delete $window.localStorage.user;
       SessionService.loggedIn = null;
       delete $window.localStorage.loggedIn;
 

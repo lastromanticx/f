@@ -26,4 +26,20 @@ class Task < ApplicationRecord
   def format_due_date
     due_date.strftime("%A, %B %e, %Y") + (overdue ? " (OVERDUE)" : "")
   end
+
+  def due_date_string
+    due_date.strftime("%Y-%m-%d")    
+  end
+
+  def serialize_with_all_tags
+    {
+      id: id,
+      name: name,
+      description: description,
+      due_date_string: due_date_string,
+      status: status,
+      tags: tags.map(&:id),
+      all_tags: Tag.all.map{|tag| {id: tag.id, name: tag.name}}
+    }
+  end
 end

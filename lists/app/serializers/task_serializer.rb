@@ -1,5 +1,5 @@
 class TaskSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :format_due_date, :status, :errors
+  attributes :id, :name, :description, :format_due_date, :due_date_string, :status, :list_id, :errors
   has_many :tags
 
   def format_due_date

@@ -1,0 +1,31 @@
+<h2>{{ ctrl.list.name }}</h2>
+
+<a ng-show="ctrl.list.editable" ui-sref="lists.edit({id: {{ ctrl.list.id }} })">Edit</a>
+
+<p>&nbsp;</p>
+
+<h5>Collaborators:</h5>
+<p>{{ ctrl.list.collaborators }}</p>
+
+<p>&nbsp;</p>
+<h4>Tasks:</h4>
+
+<p>&nbsp;</p>
+Search: <input type="text" ng-model="ctrl.search" ng-change="ctrl.refilterTasks()" />
+<hr>
+
+<div ng-show="ctrl.list.tasks.length === 0">
+  There are no tasks in this list.
+</div>
+
+<div ng-repeat="task in ctrl.list.filteredTasks">
+  <h5><a ui-sref="lists.task({listId: {{ ctrl.list.id }}, taskId: {{ task.id }} })">{{ task.name }}</a></h5>
+  <p>Due: {{ task.format_due_date }}<p>
+  <p>Status: {{ task.status }}</p>
+  <hr >
+</div>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<add-task></add-task>

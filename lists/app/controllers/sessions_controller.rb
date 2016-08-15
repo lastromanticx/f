@@ -10,6 +10,14 @@ class SessionsController < ApplicationController
     end
   end
 
+  def user
+    if not current_user
+      render json: {error: "Could not validate server session. Please log in."}, status: 200
+    else
+      render json: current_user, status: 200
+    end
+  end
+
   def destroy
     session.clear
     render plain: "logout successful"

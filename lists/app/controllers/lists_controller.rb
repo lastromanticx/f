@@ -51,8 +51,10 @@ class ListsController < ApplicationController
 
   def search
     if params[:search]
-      @results = List.search(search_params["query"],search_params["list_id"],current_user.id)
-      @query = search_params.to_h
+      results = List.search(search_params["query"],search_params["list_id"],current_user.id)
+      render json: results, status: 200
+    else
+      render json: {error: "Search params undefined."}, status: 200
     end
   end
 

@@ -4,8 +4,12 @@ function SessionService($http){
   svc.user = null;
   svc.loggedIn = false;
 
-  svc.getUserInfo = function (login_hash){
+  svc.authenticateUser = function (login_hash){
     return $http.post('/sessions',login_hash);
+  }
+
+  svc.getUserInfo = function(){
+    return $http.get('/sessions/user');
   }
 
   svc.endSession = function(){

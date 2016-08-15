@@ -55,13 +55,88 @@ angular
           }
         }
       })
-  
+
+    ///////* TASKS *///////
+
+      .state('lists.task',{
+        url: '/lists/:listId/tasks/:taskId',
+        templateUrl: 'tasks/show.html',
+        controller: 'TasksShowController as ctrl',
+        resolve: {
+          task: function($stateParams,TaskService){
+            return TaskService.getTask($stateParams.taskId).then(function(resp){
+              if (resp.data.error){
+                alert(resp.data.error);
+                $state.go('lists.index');
+
+              } else {
+                return resp.data;
+              }
+            });
+          }
+        }
+      })
+      .state('tasks',{
+        abstract: true,
+        url: '',
+        template: '<div ui-view></div>'
+      })
+      .state('tasks.edit',{
+        url: '/tasks/:id/edit',
+        controller: 'TasksCrudController as ctrl',
+        templateUrl: 'tasks/edit.html',
+        resolve: {
+          task: function($stateParams,TaskService){
+            return TaskService.getTaskEdit($stateParams.id).then(function(resp){
+              if (resp.data.error){
+                alert(resp.data.error);
+                $state.go('lists.index');
+
+              } else {
+                return resp.data;
+              }
+            });
+          }
+        }
+      })
+
+    ///////* TAGS *///////
+      .state('tags',{
+        abstract: true,
+        url: '',
+        template: '<div ui-view></div>'
+      })
+      .state('tags.index',{
+        url: '/tags',
+        templateUrl: 'tags/index.html'
+      })
+
+    ///////* SEARCH *///////
+
+      .state('search',{
+        url: '/search',
+        templateUrl: 'search/index.html',
+        controller: 'SearchController as ctrl'
+      })
+
     ///////* USERS *///////
       .state('users',{
-        url: '/users',
+        url: '/accounts/myAccount',
         templateUrl: 'users/index.html',
         controller: 'UsersController as ctrl',
         resolve: {
+          userInfo: function(SessionService){
+            return SessionService.getUserInfo().then(function(resp){
+              if (resp.data.error){
+                alert("An error occurred: " + resp.data.error);
+                $state.go('sessions.new');
+
+              } else {
+                return resp.data;
+              }
+            });
+                               
+          }
         }
       })
 

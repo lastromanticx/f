@@ -12,42 +12,35 @@ class TasksController < ApplicationController
   end
 
   def show
-    @task = Task.find_by(id: params[:id])
-    if @task.nil?
-      not_found
-    elsif not authorize_resource(current_user,@task,:show)
-      return redirect_to lists_path
+    task = Task.find_by(id: params[:id])
+    if task.nil?
+      render json: {error: "Could not find task with id #{params[:id]}."}, status: 200
+    elsif not authorize_resource(current_user,task,:show)
+      render json: {error: "Unauthorized."}, status: 200
+    else
+      render json: task
     end
   end
 
   def edit
-    if params[:list_id]
-      list = List.find_by(id: params[:list_id])
-      if list.nil?
-        flash[:warning] = "List not found."
-        return redirect_to lists_path
-      elsif not authorize_resource(current_user,list,:show)
-        return redirect_to lists_path
-      else
-        @task = list.tasks.find_by(id: params[:id])
-        if @task.nil? 
-          flash[:warning] = "Task not found."
-          return redirect_to list_path(list)
-        end
-      end
+    task = Task.find_by(id: params[:id])
+    if task.nil?
+      render json: {error: "Could not find task with id #{params[:id]}."}, status: 200
     else
-      @task = task.find(params[:id])
+      render json: task.serialize_with_all_tags
     end
   end
 
   def update
-    @task = Task.find(task_params[:id])
-    #return redirect_to lists_path if not authorize_resource(current_user,@task,:update)
-    if not @task.update(task_params)
-      return render json: {error: "Could not update task."}
+    task = Task.find(task_params[:id])
+
+    if not authorize_resource(current_user,task,:update)
+      return render json: {error: "Unauthorized."}, status: 200
+    elsif not task.update(task_params)
+      return render json: {error: "Could not update task."}, status: 200
     end
 
-    redirect_to task_path(@task)
+    render json: task, status: 200
   end
 
   def destroy
@@ -62,6 +55,6 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:name,:description,:due_date,:status,:list_id, tag_ids: [], tags_attributes: [:name])
+    params.require(:task).permit(:id,:name,:description,:due_date,:status,:list_id, tag_ids: [], tags_attributes: [:name])
   end
 end

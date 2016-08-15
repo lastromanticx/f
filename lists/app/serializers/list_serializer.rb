@@ -12,8 +12,7 @@ class ListSerializer < ActiveModel::Serializer
     true
     authorize_resource(current_user,object,:edit)
   end
-  
-  # add all tags for task form on list show page
+
   def all_tags
     Tag.all.map{|tag| {id: tag.id, name: tag.name}}
   end
