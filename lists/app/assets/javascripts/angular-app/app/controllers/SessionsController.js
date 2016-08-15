@@ -1,4 +1,4 @@
-function SessionsController(SessionService,$state,$window){
+function SessionsController(SessionService,Auth,$state,$window){
   var ctrl = this;
 
   ctrl.login = function(){
@@ -7,10 +7,10 @@ function SessionsController(SessionService,$state,$window){
         return alert(resp.data.error);
 
       } else {
-        SessionService.user = new User(resp.data);
+        Auth.setUser(resp.data);
 
-        // save a flag without sensitive info, to keep session locally across browser tabs 
-        $window.localStorage.loggedIn = SessionService.loggedIn = true;
+        // set local flag to keep local permission on browser refresh and accros browser tabs.
+        $window.localStorage.loggedIn = true;
 
         $state.go('lists.index');
       }

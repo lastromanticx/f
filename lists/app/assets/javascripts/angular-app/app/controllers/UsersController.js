@@ -9,8 +9,7 @@ function UsersController(userInfo,SessionService,$state,$window){
         alert("An error occurred processing the request.\nSigning out locally.");
       }
 
-      SessionService.user = null;
-      SessionService.loggedIn = null;
+      Auth.unsetUser;
       delete $window.localStorage.loggedIn;
 
       $state.go('sessions.new');

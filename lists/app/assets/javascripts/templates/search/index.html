@@ -3,14 +3,17 @@
     <h4>Search</h4>
   </div>
   <div class="panel-body">
-    <form ng-submit="ctrl.search()">
+    <form name="form" ng-submit="ctrl.search()">
       <div class="form-group">
         <label>List Id (optional)</label>
         <input type="text" class="form-control" ng-model="ctrl.formData.search.list_id" />
       </div>
       <div class="form-group">
         <label>Query</label>
-        <input class="form-control" ng-model="ctrl.formData.search.query" />
+        <input type="text" name="query" class="form-control" ng-model="ctrl.formData.search.query" required="required" />
+        <div ng-messages="form.query.$error"> 
+          <div class="alert alert-warning" ng-message="required" ng-if="form.query.$touched">Please enter a search term.</div>
+        </div>
       </div>
       <input type="submit" id="submit" value="Search" class="btn btn-primary" />
     </form>

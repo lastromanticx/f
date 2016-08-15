@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  before_filter :require_login, :except => [:create]
+
   def create
     user = User.find_by(email: params[:email]) 
     error_message = "Email and/or password do not match our records."
@@ -11,15 +13,11 @@ class SessionsController < ApplicationController
   end
 
   def user
-    if not current_user
-      render json: {error: "Could not validate server session. Please log in."}, status: 200
-    else
-      render json: current_user, status: 200
-    end
+    render json: current_user, status: 200
   end
 
   def destroy
     session.clear
-    render plain: "logout successful"
+    render plain: "Logout successful."
   end
 end

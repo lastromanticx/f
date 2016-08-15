@@ -14,6 +14,10 @@ function TaskService($http){
   this.updateTask = function(task_hash){
     return $http.patch('/tasks/' + task_hash.task.id,task_hash);
   }
+
+  this.deleteTask = function(id){
+    return $http.delete('/tasks/' + id);
+  }
 }
 
 angular

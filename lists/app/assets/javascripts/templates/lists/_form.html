@@ -21,9 +21,10 @@
 </div>
 
 <p>&nbsp;</p>
+<div ng-show="ctrl.list.id !== undefined">
+  <a href="" ng-click="ctrl.deleteList()">Delete</a>
 
-<a href="" ng-click="ctrl.deleteList()">Delete</a>
+  <p>&nbsp;</p>
 
-<p>&nbsp;</p>
-
-<a ui-sref="lists.index">Back to lists</a>
+  <a ui-sref="lists.index">Back to lists</a>
+</div>

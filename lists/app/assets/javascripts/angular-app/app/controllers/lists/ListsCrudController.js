@@ -1,15 +1,11 @@
 function ListsCrudController(list,ListService,$state){
   var ctrl = this;
 
-  ctrl.list = list;
+  ctrl.list = new List(list);
 
   // remove the creator from the list of collaborators
   if (ctrl.list.collaborators){
-    ctrl.list.collaborators = 
-      ctrl.list.collaborators.split(',')
-                             .filter(x => !x.match('creator'))
-                             .map(x => x.replace(/^\s+|\s+$/,""))
-                             .join(',');
+    ctrl.list.collaborators = ctrl.list.collaboratorsWithoutCreator(); 
   }
 
   ctrl.formData = {

@@ -44,12 +44,17 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    task = Task.find(params[:id])
-    return redirect_to lists_path if not authorize_resource(current_user,task,:destroy)
-    list = task.list
+    task = Task.find_by(id: params[:id])
+
+    if task.nil?
+      return render json: {error: "Could not find task with id #{params[:id]}."}, status: 200
+    elsif not authorize_resource(current_user,task,:destroy) 
+      return render json: {error: "Unauthorized."}, status: 200
+    end
+
     task.destroy
 
-    redirect_to list_path(list)
+    render plain: "Task deleted successfully.", status: 200
   end
 
   private

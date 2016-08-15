@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
-  before_filter :authenticate_user!, :except => [:home]
+  before_filter :require_login, :except => [:home]
 
   def home
   end
