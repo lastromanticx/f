@@ -1,3 +1,3 @@
 class ListTaskSerializer < ActiveModel::Serializer
-  attributes :id, :name, :status, :format_due_date
+  attributes :id, :name, :status, :due_date_string
 end

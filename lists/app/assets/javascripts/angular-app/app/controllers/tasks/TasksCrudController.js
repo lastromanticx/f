@@ -18,7 +18,7 @@ function TasksCrudController(task,TaskService,$state){
         id: ctrl.task.id,
         name: ctrl.task.name,
         description: ctrl.task.description,
-        due_date: ctrl.task.dueDateString,
+        due_date: ctrl.task.dueDate,
         status: ctrl.task.status
       }
     }
